@@ -1,0 +1,77 @@
+[
+    { "comment": "add replaces any existing field",
+      "doc": {"foo": null},
+      "patch": [{"op": "add", "path": "/foo", "value":1}],
+      "expected": {"foo": 1} },
+
+    { "comment": "toplevel object, numeric string",
+      "doc": {},
+      "patch": [{"op": "add", "path": "/foo", "value": "1"}],
+      "expected": {"foo":"1"} },
+
+    { "comment": "toplevel object, integer",
+      "doc": {},
+      "patch": [{"op": "add", "path": "/foo", "value": 1}],
+      "expected": {"foo":1} },
+
+    { "comment": "Add composite value at top level",
+      "doc": {"foo": 1},
+      "patch": [{"op": "add", "path": "/bar", "value": [1, 2]}],
+      "expected": {"foo": 1, "bar": [1, 2]} },
+
+    { "comment": "Add into composite value",
+      "doc": {"foo": 1, "baz": [{"qux": "hello"}]},
+      "patch": [{"op": "add", "path": "/baz/0/foo", "value": "world"}],
+      "expected": {"foo": 1, "baz": [{"qux": "hello", "foo": "world"}]} },
+
+
+    { "doc": {"foo": 1},
+      "patch": [{"op": "add", "path": "/bar", "value": true}],
+      "expected": {"foo": 1, "bar": true} },
+
+    { "doc": {"foo": 1},
+      "patch": [{"op": "add", "path": "/bar", "value": false}],
+      "expected": {"foo": 1, "bar": false} },
+
+    { "doc": {"foo": 1},
+      "patch": [{"op": "add", "path": "/bar", "value": null}],
+      "expected": {"foo": 1, "bar": null} },
+
+    { "doc": {"foo": 1, "bar": [1, 2, 3, 4]},
+      "patch": [{"op": "remove", "path": "/bar"}],
+      "expected": {"foo": 1} },
+
+    { "doc": {"foo": 1, "baz": [{"qux": "hello"}]},
+      "patch": [{"op": "remove", "path": "/baz/0/qux"}],
+      "expected": {"foo": 1, "baz": [{}]} },
+
+    { "doc": {"foo": 1, "baz": [{"qux": "hello"}]},
+      "patch": [{"op": "replace", "path": "/foo", "value": [1, 2, 3, 4]}],
+      "expected": {"foo": [1, 2, 3, 4], "baz": [{"qux": "hello"}]} },
+
+    { "doc": {"foo": [1, 2, 3, 4], "baz": [{"qux": "hello"}]},
+      "patch": [{"op": "replace", "path": "/baz/0/qux", "value": "world"}],
+      "expected": {"foo": [1, 2, 3, 4], "baz": [{"qux": "world"}]} },
+
+    { "doc": {"foo": null},
+      "patch": [{"op": "replace", "path": "/foo", "value": "truthy"}],
+      "expected": {"foo": "truthy"},
+      "comment": "null value should be valid obj property to be replaced with something truthy" },
+
+    { "doc": {"foo": null},
+      "patch": [{"op": "remove", "path": "/foo"}],
+      "expected": {},
+      "comment": "null value should be valid obj property to be removed" },
+
+    { "doc": {"foo": "bar"},
+      "patch": [{"op": "replace", "path": "/foo", "value": null}],
+      "expected": {"foo": null},
+      "comment": "null value should still be valid obj property replace other value" },
+
+    { "comment": "Patch with different capitalisation than doc",
+       "doc": {"foo":"bar"},
+       "patch": [{"op": "add", "path": "/FOO", "value": "BAR"}],
+       "expected": {"foo": "bar", "FOO": "BAR"}
+    }
+
+]

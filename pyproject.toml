@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "jsonpatch-to-mongodb"
+version = "0.1.0"
+description = ""
+authors = ["Derfirm <beulea@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+jsonpatch = "^1.32"
+black = "^21.9b0"
+isort = "^5.9.3"
+pytest-mongodb = "^2.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
